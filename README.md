@@ -1,6 +1,7 @@
 ### dependencies use : go mod
 
 - from GO >=1.11 we can develop outside $GOPATH
+- after upgrade bin go run `cd $GOPATH/src && go get -u -v ./...`
 - run `go mod init {module_name}` will create **_go.mod_** file
 - run `go get {package}` will update **_go.mod_**
 
