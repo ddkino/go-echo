@@ -1,9 +1,11 @@
 package main
 
 import (
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -18,11 +20,11 @@ type Trainer struct {
 
 func main() {
 	// Rest of the code will go here
-	client, err := mongo.Connect(context.TODO(), "mongodb://localhost:27017")
-
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
 	if err != nil {
 		log.Fatal(err)
 	}
+	context.WithTimeout(context.Background(), 10*time.Second)
 
 	// Check the connection
 	err = client.Ping(context.TODO(), nil)
@@ -35,7 +37,7 @@ func main() {
 
 	collection := client.Database("kb").Collection("programmesseloger")
 
-    defer client.Disconnect(context.TODO())
+	defer client.Disconnect(context.TODO())
 	// err = client.Disconnect(context.TODO())
 
 	// if err != nil {
@@ -45,7 +47,7 @@ func main() {
 
 	// create a value into which the result can be decoded
 	var result interface{}
-    filter := bson.M{}
+	filter := bson.M{}
 
 	err = collection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
